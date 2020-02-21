@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<body>
+{% verbatim %}
+<div class="container" id="app">
+  <h1 class="mb-2 w-auto mx-auto">News</h1>
+  <div class="list-group w-75 mx-auto" v-for="item in news">
+    <a href="#" class="list-group-item list-group-item-action">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{ item.header }}</h5>
+        <small>{{ item.date }}</small>
+      </div>
+      <p class="mb-1">{{ item.text }}</p>
+    </a>
+  </div>
+</div>
+{% endverbatim %}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script>
+	var app = new Vue({
+		el: '#app',
+
+		data: {
+			news: []
+		},
+		mounted() {
+			this.getNews()
+			console.log('start')
+		},
+		methods: {
+			getNews() {
+				axios.get('http://localhost:8000/api/v1/news/').then(res => {
+					this.news=res.data
+				}).catch(err => {
+					console.log(err.response.data)
+				})
+			}
+		}
+	})
+</script>
+</body>
+</html>
